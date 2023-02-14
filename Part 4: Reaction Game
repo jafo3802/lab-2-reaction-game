@@ -1,0 +1,50 @@
+
+int INPUT_PIN = 7;
+int LEDPIN = 10;
+int buttonState = 0;
+
+//int ledState = HIGH;
+//int lastButtonState = LOW;
+
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(INPUT_PIN, INPUT);  
+  pinMode(LEDPIN,OUTPUT);
+
+  randomSeed(3);
+  Serial.begin(9600);
+
+  Serial.println("Welcome to the game! Press the button when the LED turns on");
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  int buttonState = digitalRead(INPUT_PIN); //variable for button press
+  int LEDcheck = digitalRead(LEDPIN); //variable for LED
+  digitalWrite(LEDPIN,LOW); //set LED to off
+
+  int currentTime = millis(); //variable to measure time between LED 'ON' and button press
+
+  int randomNum = random(500,5000); //random start time variable
+  Serial.println("Ready to play"); //start of game
+
+  int time = millis() + randomNum; //current time + the delay in milliseconds
+
+  delay(randomNum); //random delay for LED turning on
+  digitalWrite(LEDPIN,HIGH); //turns LED on
+
+  buttonState = digitalRead(INPUT_PIN);
+
+  while(buttonState == LOW){
+    buttonState = digitalRead(INPUT_PIN);//breaks loop when buttonState is HIGH
+  }
+  digitalWrite(LEDPIN, LOW); //turn off LED after press
+
+  Serial.print(millis() - time); //output the current time minus the delay time to start the game
+  Serial.println("ms reaction time."); //output reading of reaction time in milliseconds
+
+  delay(2000); //delay 2 seconds beteen rounds
+
+}
